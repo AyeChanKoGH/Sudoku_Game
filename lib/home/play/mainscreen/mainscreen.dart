@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:sudoku_game/require.dart';
 import 'package:sudoku_game/home/play/mainscreen/sudokuclass.dart';
 import 'package:sudoku_game/mytheme.dart';
-//import 'package:sudoku_game/home/learn/blog.dart' as blog;
 
 class mainscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeNotifier = context.watch<ThemeNotifier>();
+    double screen_w = MediaQuery.of(context).size.width;
     return GestureDetector(
       child: Scaffold(
         appBar: AppBar(
@@ -33,38 +33,28 @@ class mainscreen extends StatelessWidget {
                         leading: Icon(Icons.restore),
                         title: Text("Restart"),
                         onTap: () {
-                          Provider.of<SudokuNotifier>(context, listen: false).setBoard_restart();
-                        })),
-                PopupMenuItem(
-                    child: ListTile(
-                        //leading: Icon(Icons.restore),
-                        title: Text("Autofill draf"),
-                        onTap: () {
-                          Provider.of<SudokuNotifier>(context, listen: false).set_autofill();
+                          Provider.of<SudokuNotifier>(context, listen: false).setBoard_init();
                         })),
               ],
             ),
           ],
         ),
-        body: Provider.of<SudokuNotifier>(context).isFinish()
-            ? Column(
-                children: <Widget>[
-                  SizedBox(height: 30),
-                  SudokuBoard(),
-                ],
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  UndoRedo(),
-                  SudokuBoard(),
-                  KeyPad(),
-                  SizedBox(height: 20),
-                ],
-              ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Provider.of<SudokuNotifier>(context).isFinish() ? null : UndoRedo(),
+            SudokuBoard(),
+            Provider.of<SudokuNotifier>(context).isFinish()
+                ? SizedBox(
+                    height: screen_w * 0.15,
+                  )
+                : KeyPad(),
+            SizedBox(height: 20),
+          ],
+        ),
       ),
       onTap: () {
-        Provider.of<SudokuNotifier>(context, listen: false).isFinish() ? null : Provider.of<SudokuNotifier>(context, listen: false).set_unactive();
+        Provider.of<SudokuNotifier>(context, listen: false).set_unactive();
         //mysudoku.set_active_row_col(1,0);
       },
     );
@@ -77,8 +67,8 @@ class SudokuBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Table(
       border: TableBorder(
-        top: BorderSide(width: 3.0, color: Colors.blue),
-        left: BorderSide(width: 3.0, color: Colors.blue),
+        top: BorderSide(width: 3.0, color: Colors.grey),
+        left: BorderSide(width: 3.0, color: Colors.grey),
       ),
       children: _getTableRow(),
     );
@@ -95,8 +85,8 @@ class SudokuBoard extends StatelessWidget {
       return Container(
           decoration: BoxDecoration(
             border: Border(
-              right: BorderSide(width: (colNumber % 3) == 2 ? 3.0 : 1.0, color: (colNumber % 3) == 2 ? Colors.blue : Colors.grey),
-              bottom: BorderSide(width: (rowNumber % 3) == 2 ? 3.0 : 1.0, color: (rowNumber % 3) == 2 ? Colors.blue : Colors.grey),
+              right: BorderSide(width: (colNumber % 3) == 2 ? 3.0 : 1.0, color: Colors.grey),
+              bottom: BorderSide(width: (rowNumber % 3) == 2 ? 3.0 : 1.0, color: Colors.grey),
             ),
           ),
           child: SudokuCell(rowNumber, colNumber));
@@ -149,36 +139,28 @@ class SudokuCell extends StatelessWidget {
     return InkResponse(
       enableFeedback: true,
       onTap: () {
-        Provider.of<SudokuNotifier>(context, listen: false).isFinish() ? null : Provider.of<SudokuNotifier>(context, listen: false).set_active_row_col(this.row, this.col);
+        Provider.of<SudokuNotifier>(context, listen: false).set_active_row_col(this.row, this.col);
       },
-      child: SizedBox(
+      child: Container(
         height: screen_w * 0.1,
         width: screen_w * 0.1,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              // color: Colors.red,
-              child: cell is int
-                  ? Center(
-                      child: Text(cell != 0 ? '${cell}' : '',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: mymodel.get_tcol(row, col) == Colors.black ? null : mymodel.get_tcol(row, col),
-                          )),
-                    )
-                  : Stack(
-                      children: draf(cell),
-                    ),
-              //decoration: BoxDecoration(
-              color: hatch() ? Theme.of(context).backgroundColor : null,
-            ),
-            Opacity(
-              opacity: 0.3, //mymodel.getBoardColor(this.row, this.col) == Colors.red ? 1.0 : 0.3,
-              child: Container(
-                color: mymodel.getBoardColor(this.row, this.col) == Colors.white10 ? null : mymodel.getBoardColor(this.row, this.col) ?? Colors.white10,
-              ),
-            ),
-          ],
+        color: hatch() ? Colors.grey[400] : null,
+        child: Container(
+          // color: Colors.red,
+          child: cell is int
+              ? Center(
+                  child: Text(cell != 0 ? '${cell}' : '',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: mymodel.get_tcol(row, col),
+                      )),
+                )
+              : Stack(
+                  children: draf(cell),
+                ),
+          decoration: BoxDecoration(
+            color: mymodel.getBoardColor(this.row, this.col).withOpacity(0.5),
+          ),
         ),
       ),
     );
@@ -186,8 +168,7 @@ class SudokuCell extends StatelessWidget {
 
   List<Widget> draf(List draf_list) {
     return List.generate(draf_list.length, (int index) {
-      //Color tcol=Provider.of<SudokuNotifier>(context,listen:false).get_tcol(row,col,draf_list[index]);
-      return draf_off(draf_list[index], row, col);
+      return draf_off(draf_list[index]);
     });
   }
 }
@@ -217,7 +198,7 @@ class KeyPad extends StatelessWidget {
 }
 
 class KeyPadCell extends StatelessWidget {
-  final int number;
+  int number;
   KeyPadCell(this.number);
   @override
   Widget build(BuildContext context) {
@@ -254,227 +235,49 @@ class UndoRedo extends StatelessWidget {
   }
 }
 
-/**++++++++++++++++++++++++++++++++++++++
-    +++ KeyPad Text button Widget  +++
-   ++++++++++++++++++++++++++++++++++++++*/
-class mytextbtn extends StatelessWidget {
-  /*My TextButton Class for KeyPad Cell
-    
-  */
-  final int number;
-  @override
-  mytextbtn(this.number);
-  Widget build(BuildContext context) {
-    final sudokuNotifier = context.watch<SudokuNotifier>();
-    if (this.number < 10) {
-      int num = sudokuNotifier.get_n_key(number);
-      return InkResponse(
-        enableFeedback: true,
-        onTap: () {
-          Provider.of<SudokuNotifier>(context, listen: false).setBoardCell(number);
-          if (sudokuNotifier.isFinish()) {
-            showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: const Text('congratulation'),
-                content: const Text('You Just Finish!'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context, 'OK');
-                      sudokuNotifier.set_alert();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            sudokuNotifier.set_alert();
-          }
-        },
-        child: Container(
-          color: sudokuNotifier.is_insideCell(number) ? Colors.blueAccent.withOpacity(0.5) : null,
-          child: Opacity(
-            opacity: sudokuNotifier.isactive() ? 1.0 : 0.3,
-            child: Stack(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.center,
-                  child: Text("${this.number}",
-                      style: TextStyle(
-                        fontSize: sudokuNotifier.isdraf() ? 18 : 25,
-                        color: sudokuNotifier.get_curColor(),
-                      )),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: EdgeInsets.all(3),
-                    child: Text("${num}",
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: sudokuNotifier.get_curColor(),
-                        )),
-                  ),
-                ),
-                Container(color: num == 9 ? Colors.green[200]?.withOpacity(0.2) : null),
-              ],
-            ),
-          ),
-        ),
-      );
-    } else if (this.number == 10) {
-      return TextButton(
-        onPressed: sudokuNotifier.isClickable()
-            ? () {
-                sudokuNotifier.set_draf();
-                if (sudokuNotifier.isFinish()) {
-                  showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('congratulation'),
-                      content: const Text('You Just Finish!'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, 'OK');
-                            sudokuNotifier.set_alert();
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  sudokuNotifier.set_alert();
-                }
-              }
-            : null,
-        child: Icon(Icons.edit),
-      );
-    } else if (this.number == 11) {
-      return TextButton(
-        onPressed: () {
-          sudokuNotifier.set_curColor();
-        },
-        child: CircleAvatar(backgroundColor: sudokuNotifier.get_curColor(), radius: 12),
-      );
-    } else {
-      return TextButton(
-        onPressed: () {
-          sudokuNotifier.clear();
-        },
-        child: Icon(Icons.close),
-      );
-    }
-  }
-}
-
-/****** Pencle Mode *********/
-class draf_off extends StatelessWidget {
-  final int value;
-  final row, col;
-  final alig = [
-    Alignment.topLeft,
-    Alignment.topCenter,
-    Alignment.topRight,
-    Alignment.centerLeft,
-    Alignment.center,
-    Alignment.centerRight,
-    Alignment.bottomLeft,
-    Alignment.bottomCenter,
-    Alignment.bottomRight
-  ];
-  @override
-  draf_off(this.value, this.row, this.col);
-  Widget build(BuildContext context) {
-    final txtTheme = Theme.of(context).textTheme.headline6;
-    return Align(
-      alignment: alig[value - 1],
-      child: Container(
-        margin: EdgeInsets.all(1),
-        decoration: Provider.of<SudokuNotifier>(context).isCurrentnum(value) ? BoxDecoration(border: Border.all(), borderRadius: BorderRadius.all(Radius.circular(15))) : null,
-        child: Text(
-          "${value}",
-          style: txtTheme?.copyWith(
-            color: Provider.of<SudokuNotifier>(context, listen: false).get_dtcol(row, col, value),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 /************************************************************
       | SUDOKU NOTIFIER to set state for stateless Widget |
     *********************************************************/
 class SudokuNotifier extends ChangeNotifier {
-  final String rank;
-  final int pack;
-  final int puzzle;
+  String rank;
+  int pack;
+  int puzzle;
   Sudoku mysudoku = new Sudoku();
-  StateSave? mystate;
   SudokuNotifier(this.rank, this.pack, this.puzzle) {
-    mystate = new StateSave(rank, pack, puzzle);
     setBoard_init();
-    //setBoard_restart();
   }
-
-  dynamic findlocal() async {
-    return mystate?.findlocal();
-  }
-
-  void setlocal() {
-    mystate?.setlocal(mysudoku.getboard, mysudoku.getcolor, mysudoku.getbgcolor);
-  }
-
   void setBoard_init() async {
-    var sud = await findlocal();
-    if (sud != null) {
-      mysudoku.setBoard_init(sud.board, color: sud.color, bgcolor: sud.bgcolor);
-    } else {
-      setBoard_restart();
-    }
-    notifyListeners();
-  }
-
-  void setBoard_restart() async {
     var data = await readJson(rank, pack, puzzle);
     mysudoku.setBoard_init(data);
-    setlocal();
+    //mysudoku=new Sudoku(data);
     notifyListeners();
   }
 
+  //var mysudoku = new Sudoku();
   dynamic getBoardCell(int row, int col) {
     return mysudoku.getBoardCell(row, col);
   }
 
-  Color? getBoardColor(int row, int col) {
+  Color getBoardColor(int row, int col) {
     return mysudoku.getBoardColor(row, col);
   }
 
   int get_n_key(int num) {
-    return mysudoku.get_n_key(num);
+    return mysudoku.get_num_of_key(num);
   }
 
-  Color? get_tcol(int row, int col) {
+  Color get_tcol(int row, int col) {
     return mysudoku.get_tcol(row, col);
   }
 
-  Color? get_dtcol(int row, int col, int num) {
-    return mysudoku.get_dtcol(row, col, num);
-  }
-
-  Color? get_curColor() {
+  Color get_curColor() {
     return mysudoku.get_curColor();
   }
 
   //-------------Set-------------
   void setBoardCell(int num) {
     mysudoku.setBoardCell(num);
-    setlocal();
-    //notifyListeners();
+    notifyListeners();
   }
 
   void set_active_row_col(int row, int col) {
@@ -487,26 +290,16 @@ class SudokuNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void set_alert() {
-    notifyListeners();
-  }
-
   void set_draf() {
     mysudoku.set_draf();
-    //notifyListeners();
+    notifyListeners();
   }
 
   void set_curColor() {
     mysudoku.set_curColor();
-    print(mysudoku.getcolor);
     notifyListeners();
   }
 
-  void set_autofill() {
-    mysudoku.auto_fill();
-    setlocal();
-    notifyListeners();
-  }
   //^^^^^^^Fetching data from local json file^^^^^^^^//
 
   //++++++++++ Check++++++++++++//
@@ -518,20 +311,8 @@ class SudokuNotifier extends ChangeNotifier {
     return mysudoku.isClickable();
   }
 
-  bool isdraf() {
-    return mysudoku.isdraf();
-  }
-
   bool is_insideCell(int num) {
     return mysudoku.is_insideCell(num);
-  }
-
-  bool isactive() {
-    return mysudoku.isactive();
-  }
-
-  bool isCurrentnum(int num) {
-    return mysudoku.isCurrentnum(num);
   }
 
   void clear() {
@@ -548,5 +329,101 @@ class SudokuNotifier extends ChangeNotifier {
   void redo() {
     mysudoku.redo();
     notifyListeners();
+  }
+}
+
+/**++++++++++++++++++++++++++++++++++++++
+    +++ KeyPad Text button Widget  +++
+   ++++++++++++++++++++++++++++++++++++++*/
+class mytextbtn extends StatelessWidget {
+  /*My TextButton Class for KeyPad Cell
+    
+  */
+  @override
+  int number;
+  mytextbtn(this.number);
+  Widget build(BuildContext context) {
+    final sudokuNotifier = context.watch<SudokuNotifier>();
+    if (this.number < 10) {
+      return GestureDetector(
+        onTap: () {
+          sudokuNotifier.setBoardCell(this.number);
+        },
+        child: Container(
+          color: sudokuNotifier.is_insideCell(number) ? Colors.grey[200] :null,
+          child: Stack(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.center,
+                child: Text("${this.number}",
+                    style: TextStyle(
+                      fontSize: 25,
+                    )),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: EdgeInsets.all(3),
+                  child: Text("${sudokuNotifier.get_n_key(number)}",
+                      style: TextStyle(
+                        fontSize: 13,
+                      )),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else if (this.number == 10) {
+      return TextButton(
+        onPressed: sudokuNotifier.isClickable()
+            ? () {
+                sudokuNotifier.set_draf();
+              }
+            : null,
+        child: Icon(Icons.edit),
+      );
+    } else if (this.number == 11) {
+      return TextButton(
+        onPressed: () {
+          sudokuNotifier.set_curColor();
+        },
+        child: CircleAvatar(backgroundColor: sudokuNotifier.get_curColor(), radius: 10),
+      );
+    } else {
+      return TextButton(
+        onPressed: () {
+          sudokuNotifier.clear();
+        },
+        child: Icon(Icons.close),
+      );
+    }
+  }
+}
+
+/****** Pencle Mode *********/
+class draf_off extends StatelessWidget {
+  @override
+  int value = 0;
+  draf_off(this.value);
+  var alig = [
+    Alignment.topLeft,
+    Alignment.topCenter,
+    Alignment.topRight,
+    Alignment.centerLeft,
+    Alignment.center,
+    Alignment.centerRight,
+    Alignment.bottomLeft,
+    Alignment.bottomCenter,
+    Alignment.bottomRight
+  ];
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: alig[value - 1],
+      child: Text(
+        "${value}",
+        style: TextStyle(fontSize: 12.0),
+      ),
+    );
   }
 }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku_game/home/play/flist/flist.dart';
 import 'package:sudoku_game/require.dart';
-import 'package:provider/provider.dart';
-
 class play extends StatelessWidget {
   @override
+  
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -12,39 +11,36 @@ class play extends StatelessWidget {
         ),
         body: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            MyelvButton('Beginner'),
+               mainAxisAlignment:MainAxisAlignment.center,
+          children: <Widget>[ 
+            myelvButton('Easy'),
             SizedBox(height: 20),
-            MyelvButton('Easy'),
+            myelvButton('Medium'),
             SizedBox(height: 20),
-            MyelvButton('Medium'),
+            myelvButton('Hard'),
             SizedBox(height: 20),
-            MyelvButton('Hard'),
-            SizedBox(height: 20),
-            MyelvButton('Evil'),
+            myelvButton('Evil'),
           ],
         )));
   }
 }
 
-class MyelvButton extends StatelessWidget {
-  final String rank;
+class myelvButton extends StatelessWidget{
   @override
-  MyelvButton(this.rank);
-  Widget build(BuildContext context) {
+  String rank;
+  myelvButton(this.rank);
+  Widget build(BuildContext context){
     return ElevatedButton(
       style: raisedButtonStyle,
-      child: Text(this.rank),
-      onPressed: () {
-        Provider.of<ForpackProvider>(context, listen: false).inital(rank);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => flist(rank: this.rank),
-          ),
-        );
-      },
+              child: Text(this.rank),
+              onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:(context)=>flist(rank:this.rank),
+                    ),
+                  );
+              },
     );
   }
 }
