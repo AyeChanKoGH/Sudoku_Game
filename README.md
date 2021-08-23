@@ -1,15 +1,5 @@
-# Sudoku Game App
-
-  My vary first app using flutter framework
-
-##Sudoku Game Feature
-  - You can choose 400 level around
-  - Easy and adaptable theme with two dark and light mode
-  - Easily swipe between cell color when it uncertain to put on.
-  - Pencile mode may help you to consider more easily.
-  - You can also autofill the board with autofill pencile mode
-  - Easily Undo and Redoable.
-  - You can also read the technique of solving sudoku
+# SUDOKU PUZZLE GAME
+##My First App using flutter framework.
 
 A new Flutter project created with [FlutLab](https://flutlab.io)
 
