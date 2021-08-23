@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku_game/home/play/mainscreen/mainscreen.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_game/require.dart';
 
 class plist extends StatelessWidget {
-  /**plist puzzle list to play */
   final String rank;
   final int pack;
-  plist({Key? key, required this.rank, required this.pack}) : super(key: key);
+  plist({Key key, @required this.rank, this.pack}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +24,6 @@ class plist extends StatelessWidget {
         itemCount: 10,
         itemBuilder: (context, index) {
           return Column(children: <Widget>[
-            //buildwithfutrue(index),
             ListTile(
                 title: Text(
                   'Puzzle ${index + 1}',
@@ -34,10 +31,7 @@ class plist extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
-                trailing: Provider.of<GetisNew>(context).isNew(index) ? null : Text('New'),
                 onTap: () {
-                  Provider.of<GetisNew>(context, listen: false).setsharepref(index);
-                  Provider.of<ForpackProvider>(context, listen: false).setshareprefpack(pack);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -14,59 +14,39 @@ description: Sudoku Game
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
  # day_night_switch:
   flutter:
     sdk: flutter
   provider: ^5.0.0
-  url_launcher : ^6.0.9
-  shared_preferences: ^2.0.0
+  #shared_preferences: ^2.0.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  localstorage: ^4.0.0
-  package_info: ^2.0.2
   
 
 flutter_icons:
-  image_path: "assets/icon/ic_launcher.png"
   android: true
   ios: true
-  
+  image_path: "assets/icon/lunch_icon.png"
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons : ^0.8.0
-  flutter_launcher_name: "^0.0.1"
-  
-flutter_launcher_name:
-  name: "SUDOKU"
-
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - assets/beginner.json
     - assets/easy.json
     - assets/medium.json
     - assets/hard.json
+
     - assets/evil.json
-    - assets/icon/ic_launcher.png
-    - assets/image/block_block_interaction.jpg
-    - assets/image/block_with_column_row_interactions.jpg
-    - assets/image/hidden_pairs.jpg
-    - assets/image/hidden_triples.jpg
-    - assets/image/naked_pair.png
-    - assets/image/naked_triples.jpg
-    - assets/image/solecandidate.png
-    - assets/image/unique_candidate.png
-    
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -100,11 +80,5 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  fonts:
-     - family: Pyidaungsu
-       fonts:
-         - asset: assets/fonts/Pyidaungsu-1.8_Regular.ttf
-         - asset: assets/fonts/Pyidaungsu-1.8_Bold.ttf
-
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

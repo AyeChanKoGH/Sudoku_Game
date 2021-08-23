@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku_game/home/play/flist/flist.dart';
 import 'package:sudoku_game/require.dart';
-import 'package:provider/provider.dart';
 
 class play extends StatelessWidget {
   @override
@@ -14,8 +13,6 @@ class play extends StatelessWidget {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            MyelvButton('Beginner'),
-            SizedBox(height: 20),
             MyelvButton('Easy'),
             SizedBox(height: 20),
             MyelvButton('Medium'),
@@ -37,7 +34,6 @@ class MyelvButton extends StatelessWidget {
       style: raisedButtonStyle,
       child: Text(this.rank),
       onPressed: () {
-        Provider.of<ForpackProvider>(context, listen: false).inital(rank);
         Navigator.push(
           context,
           MaterialPageRoute(

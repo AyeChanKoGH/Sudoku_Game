@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku_game/require.dart';
-import 'package:sudoku_game/home/learn/blog_builder.dart';
-import 'package:sudoku_game/home/learn/blog.dart' as blog;
 
 class learn extends StatelessWidget {
   @override
@@ -20,7 +18,7 @@ class learn extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ContextCreate(value: 'about_sudoku')),
+                  MaterialPageRoute(builder: (context) => AboutSudoku()),
                 );
               },
             ),
@@ -31,7 +29,7 @@ class learn extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SolveMethod()),
+                  MaterialPageRoute(builder: (context) => Method()),
                 );
               },
             ),
@@ -40,66 +38,56 @@ class learn extends StatelessWidget {
   }
 }
 
-class SolveMethod extends StatelessWidget {
-  SolveMethod({Key? key}) : super(key: key);
-  final names = [
-    'sole_candidate',
-    'unique_candidate',
-    'block_with_column_row_interaction',
-    'block_block_interaction',
-    'naked_pair',
-    'hidden_pair',
-    'naked_triples',
-    'hidden_triples'
+class Method extends StatelessWidget {
+  final List methods = [
+    'Sole Candidate or Naked Single',
+    'Unique Candidate',
+    'Block and column/ Row Interaction',
+    'Block/ Block Interaction',
+    'Naked Subset',
+    'Hidden subset',
+    'X-Wing',
+    'Swordfish',
+    'Forcing Chain'
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Sudoku Solving Method"),
-        ),
-        body: ListView.separated(
-            itemCount: names.length,
-            separatorBuilder: (BuildContext context, int index) => Divider(),
-            itemBuilder: (context, index) {
-              return Card(
-                elevation: 5.0,
-                child: Cardcreate(name: names[index]),
-              );
-            }));
+      appBar: AppBar(
+        title: Text("Some Sudoku Solving Method"),
+      ),
+      body: ListView.separated(
+        itemCount: methods.length,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 50,
+            margin: EdgeInsets.all(1),
+            child: ListTile(
+                title: Text(
+                  '${methods[index]}',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {}),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return Divider(color: Colors.grey);
+        },
+      ),
+    );
   }
 }
 
-class Cardcreate extends StatelessWidget {
-  final String name;
-  Cardcreate({Key? key, required this.name}) : super(key: key);
+class AboutSudoku extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List data = blog.methods[name];
-    Map inside = data[2];
-    String insidetext = '';
-    if (inside.keys.first == 'subtitle') {
-      insidetext = inside['subtitle'] + '\n';
-      inside = data[3];
-    }
-    insidetext = insidetext + inside['body'];
-    return Container(
-      padding: EdgeInsets.all(10),
-      height: 150,
-      child: InkWell(
-        child: Column(
-          children: <Widget>[
-            Text(data[0], style: TextStyle(fontSize: 20)),
-            Text(insidetext, maxLines: 3, style: Theme.of(context).textTheme.bodyText2),
-          ],
-        ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ContextCreate(value: name)),
-          );
-        },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("About Sudoku"),
       ),
+      body: Text("Sudoku"),
     );
   }
 }
