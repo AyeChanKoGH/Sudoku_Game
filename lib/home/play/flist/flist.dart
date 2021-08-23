@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku_game/home/play/flist/plist.dart';
-import 'package:sudoku_game/require.dart';
-import 'package:provider/provider.dart';
 
 class flist extends StatelessWidget {
   /**Pack list  */
-  final String rank;
-  flist({Key? key, required this.rank}) : super(key: key);
-
+  String rank;
+  flist({Key key, @required this.rank}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,10 +20,9 @@ class flist extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        itemCount: rank == 'Beginner' ? 5 : 10,
+        itemCount: 10,
         itemBuilder: (context, index) {
           return Column(children: <Widget>[
-            //buildwithfutrue(index),
             ListTile(
                 title: Text(
                   'Pack ${index + 1}',
@@ -34,14 +30,12 @@ class flist extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
-                trailing: Provider.of<ForpackProvider>(context).isNew(index) ? null : Text('New'),
                 onTap: () {
-                  Provider.of<GetisNew>(context, listen: false).inital(rank, pack: index);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => plist(rank: this.rank, pack: index),
-                    ),
+                       builder:(context)=>plist(rank:this.rank,pack:index),
+                      ),
                   );
                 }),
             Divider(color: Colors.grey),
@@ -51,32 +45,3 @@ class flist extends StatelessWidget {
     );
   }
 }
-/*
-  Widget buildwithfutrue(int index) {
-    return FutureBuilder(
-      builder: (context, projectSnap) {
-        if (projectSnap.hasData) {
-          return ListTile(
-              title: Text(
-                'Pack ${index + 1}',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              trailing: projectSnap.data == true ? null : Text('New'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => plist(rank: this.rank, pack: index),
-                  ),
-                );
-              });
-        } else {
-          return Container(height: 20);
-        }
-      },
-      future: getsharepref(rank, index),
-    );
-  }
-}*/
