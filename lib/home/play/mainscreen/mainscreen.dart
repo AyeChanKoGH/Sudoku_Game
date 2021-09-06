@@ -76,7 +76,7 @@ class SudokuBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screen_w = MediaQuery.of(context).size.width;
-    double pad = screen_w * 0.1;
+    double pad = screen_w * 0.05;
     return Padding(
         padding: EdgeInsets.all(pad),
         child: Table(
