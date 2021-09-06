@@ -75,13 +75,15 @@ class SudokuBoard extends StatelessWidget {
   /*Creating sudoku board to add number  */
   @override
   Widget build(BuildContext context) {
-    return Table(
-      border: TableBorder(
-        top: BorderSide(width: 3.0, color: Colors.blue),
-        left: BorderSide(width: 3.0, color: Colors.blue),
-      ),
-      children: _getTableRow(),
-    );
+    return Padding(
+        padding: EdgeInsets.all(2),
+        child: Table(
+          border: TableBorder(
+            top: BorderSide(width: 3.0, color: Colors.blue),
+            left: BorderSide(width: 3.0, color: Colors.blue),
+          ),
+          children: _getTableRow(),
+        ));
   }
 
   List<TableRow> _getTableRow() {
