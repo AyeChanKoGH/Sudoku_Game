@@ -60,7 +60,7 @@ class ContextCreate extends StatelessWidget {
           height: 30,
         ));
       } else if (name.containsKey('image')) {
-        mywidget.add(Image.asset(name['image'], fit: BoxFit.fitWidth));
+        mywidget.add(InteractiveViewer(child: Image.asset(name['image'], fit: BoxFit.fitWidth)));
       } else if (name.containsKey('list')) {
         mywidget.add(Textlist(mylist: name['list']));
       } else if (name.containsKey('netlink')) {
