@@ -25,28 +25,26 @@ class flist extends StatelessWidget {
       body: ListView.builder(
         itemCount: rank == 'Beginner' ? 5 : 10,
         itemBuilder: (context, index) {
-          return Column(children: <Widget>[
-            //buildwithfutrue(index),
-            Card(
-                child: ListTile(
-                    title: Text(
-                      'Pack ${index + 1}',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    trailing: Provider.of<ForpackProvider>(context).isNew(index) ? null : Text('New'),
-                    onTap: () {
-                      Provider.of<GetisNew>(context, listen: false).inital(rank, pack: index);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => plist(rank: this.rank, pack: index),
+          return
+              //buildwithfutrue(index),
+              Card(
+                  child: ListTile(
+                      title: Text(
+                        'Pack ${index + 1}',
+                        style: TextStyle(
+                          fontSize: 20,
                         ),
-                      );
-                    })),
-            Divider(color: Colors.grey),
-          ]);
+                      ),
+                      trailing: Provider.of<ForpackProvider>(context).isNew(index) ? null : Text('New'),
+                      onTap: () {
+                        Provider.of<GetisNew>(context, listen: false).inital(rank, pack: index);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => plist(rank: this.rank, pack: index),
+                          ),
+                        );
+                      }));
         },
       ),
     );
