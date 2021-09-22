@@ -29,7 +29,7 @@ class flist extends StatelessWidget {
               //buildwithfutrue(index),
               Card(
                   child: ListTile(
-                      minLeadingWidth: 20,
+                      minLeadingWidth: 80,
                       title: Text(
                         'Pack ${index + 1}',
                         style: TextStyle(
