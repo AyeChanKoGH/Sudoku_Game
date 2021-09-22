@@ -27,7 +27,7 @@ class flist extends StatelessWidget {
         itemBuilder: (context, index) {
           return Card(
               child: SizedBox(
-                  width: 40,
+                  height: 40,
                   child: ListTile(
                       title: Text(
                         'Pack ${index + 1}',
