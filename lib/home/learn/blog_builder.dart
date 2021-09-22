@@ -85,6 +85,11 @@ class Textstyle extends StatelessWidget {
     var theme = Theme.of(context).textTheme;
     return SelectableText(
       text,
+      toolbarOptions: ToolbarOptions(
+        copy: true,
+        selectAll: true,
+      ),
+      showCursor: true,
       style: form == 'title'
           ? theme.headline2?.copyWith(fontFamily: 'Pyidaungsu')
           : form == 'subtitle'
