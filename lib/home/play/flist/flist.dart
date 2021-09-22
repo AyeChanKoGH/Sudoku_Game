@@ -25,11 +25,10 @@ class flist extends StatelessWidget {
       body: ListView.builder(
         itemCount: rank == 'Beginner' ? 5 : 10,
         itemBuilder: (context, index) {
-          return
-              //buildwithfutrue(index),
-              Card(
+          return Card(
+              child: SizedBox(
+                  width: 40,
                   child: ListTile(
-                      minLeadingWidth: 80,
                       title: Text(
                         'Pack ${index + 1}',
                         style: TextStyle(
@@ -45,7 +44,7 @@ class flist extends StatelessWidget {
                             builder: (context) => plist(rank: this.rank, pack: index),
                           ),
                         );
-                      }));
+                      })));
         },
       ),
     );
