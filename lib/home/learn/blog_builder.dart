@@ -83,7 +83,8 @@ class Textstyle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
-    return Text(
+    return SelectableText(
+        child: Text(
       text,
       style: form == 'title'
           ? theme.headline2?.copyWith(fontFamily: 'Pyidaungsu')
@@ -92,7 +93,7 @@ class Textstyle extends StatelessWidget {
               : form == 'body'
                   ? theme.bodyText2
                   : theme.headline5?.copyWith(fontFamily: 'Pyidaungsu'),
-    );
+    ));
   }
 }
 
