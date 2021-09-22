@@ -60,7 +60,7 @@ class ContextCreate extends StatelessWidget {
           height: 30,
         ));
       } else if (name.containsKey('image')) {
-        mywidget.add(InteractiveViewer(child: Image.asset(name['image'], fit: BoxFit.fitWidth)));
+        mywidget.add(InteractiveViewer(child: Center(child: Image.asset(name['image'], fit: BoxFit.fitWidth))));
       } else if (name.containsKey('list')) {
         mywidget.add(Textlist(mylist: name['list']));
       } else if (name.containsKey('netlink')) {
@@ -84,7 +84,6 @@ class Textstyle extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
     return SelectableText(
-        child: Text(
       text,
       style: form == 'title'
           ? theme.headline2?.copyWith(fontFamily: 'Pyidaungsu')
@@ -93,7 +92,7 @@ class Textstyle extends StatelessWidget {
               : form == 'body'
                   ? theme.bodyText2
                   : theme.headline5?.copyWith(fontFamily: 'Pyidaungsu'),
-    ));
+    );
   }
 }
 
