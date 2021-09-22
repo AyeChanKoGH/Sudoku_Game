@@ -25,32 +25,30 @@ class plist extends StatelessWidget {
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {
-          return Column(children: <Widget>[
-            //buildwithfutrue(index),
-            Card(
-                child: ListTile(
-                    title: Text(
-                      'Puzzle ${index + 1}',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    trailing: Provider.of<GetisNew>(context).isNew(index) ? null : Text('New'),
-                    onTap: () {
-                      Provider.of<GetisNew>(context, listen: false).setsharepref(index);
-                      Provider.of<ForpackProvider>(context, listen: false).setshareprefpack(pack);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChangeNotifierProvider<SudokuNotifier>(
-                            create: (context) => SudokuNotifier(rank, pack, index),
-                            child: mainscreen(),
-                          ),
+          return Card(
+              child: SizedBox(
+                  height: 60,
+                  child: ListTile(
+                      title: Text(
+                        'Puzzle ${index + 1}',
+                        style: TextStyle(
+                          fontSize: 20,
                         ),
-                      );
-                    })),
-            Divider(color: Colors.grey),
-          ]);
+                      ),
+                      trailing: Provider.of<GetisNew>(context).isNew(index) ? null : Text('New'),
+                      onTap: () {
+                        Provider.of<GetisNew>(context, listen: false).setsharepref(index);
+                        Provider.of<ForpackProvider>(context, listen: false).setshareprefpack(pack);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider<SudokuNotifier>(
+                              create: (context) => SudokuNotifier(rank, pack, index),
+                              child: mainscreen(),
+                            ),
+                          ),
+                        );
+                      })));
         },
       ),
     );
