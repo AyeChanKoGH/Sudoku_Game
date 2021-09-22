@@ -17,7 +17,7 @@ class plist extends StatelessWidget {
             Text('Select Puzzle'),
             Text(
               '${rank}-pack${pack + 1}',
-              style: TextStyle(fontSize: 15.0),
+              style: TextStyle(fontSize: 18.0),
             )
           ],
         ),
@@ -27,27 +27,28 @@ class plist extends StatelessWidget {
         itemBuilder: (context, index) {
           return Column(children: <Widget>[
             //buildwithfutrue(index),
-            ListTile(
-                title: Text(
-                  'Puzzle ${index + 1}',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                trailing: Provider.of<GetisNew>(context).isNew(index) ? null : Text('New'),
-                onTap: () {
-                  Provider.of<GetisNew>(context, listen: false).setsharepref(index);
-                  Provider.of<ForpackProvider>(context, listen: false).setshareprefpack(pack);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChangeNotifierProvider<SudokuNotifier>(
-                        create: (context) => SudokuNotifier(rank, pack, index),
-                        child: mainscreen(),
+            Card(
+                child: ListTile(
+                    title: Text(
+                      'Puzzle ${index + 1}',
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
                     ),
-                  );
-                }),
+                    trailing: Provider.of<GetisNew>(context).isNew(index) ? null : Text('New'),
+                    onTap: () {
+                      Provider.of<GetisNew>(context, listen: false).setsharepref(index);
+                      Provider.of<ForpackProvider>(context, listen: false).setshareprefpack(pack);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangeNotifierProvider<SudokuNotifier>(
+                            create: (context) => SudokuNotifier(rank, pack, index),
+                            child: mainscreen(),
+                          ),
+                        ),
+                      );
+                    })),
             Divider(color: Colors.grey),
           ]);
         },
