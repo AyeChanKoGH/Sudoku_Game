@@ -147,6 +147,7 @@ class SudokuCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final mymodel = context.watch<SudokuNotifier>();
     double screen_w = MediaQuery.of(context).size.width;
+    double cellHeight = (screen_w - 4) / 9;
     var cell = mymodel.getBoardCell(this.row, this.col);
     return InkResponse(
       enableFeedback: true,
@@ -154,8 +155,7 @@ class SudokuCell extends StatelessWidget {
         Provider.of<SudokuNotifier>(context, listen: false).isFinish() ? null : Provider.of<SudokuNotifier>(context, listen: false).set_active_row_col(this.row, this.col);
       },
       child: SizedBox(
-        height: screen_w / 9,
-        width: screen_w / 9,
+        height: cellHeight,
         child: Stack(
           children: <Widget>[
             Container(
